@@ -1,8 +1,10 @@
 import Usuario from "../models/usuario.model.js";
+import Chat from "../models/chat.model.js";
 import Perfil from "../models/perfil.model";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import errorLog from "../config/error";
+import {obtenerChats} from "./chat.controller";
 
 /*             Registro de usuario                    */
 export const registrarse = async (req, res) => {
@@ -22,7 +24,7 @@ export const registrarse = async (req, res) => {
         const emailExiste = await Usuario.findOne({ email: email.toLowerCase() })
         if (emailExiste) return res.status(400).json({ message: "El email ya existe" })
 
-        const nickNameExiste = await Usuario.findOne({ nickname }) 
+        const nickNameExiste = await Usuario.findOne({ nickname })
         if (nickNameExiste) return res.status(400).json({ message: "El NickName ya existe" })
 
         const passwordEncriptado = await bcrypt.hash(password, 10)
@@ -49,7 +51,8 @@ export const registrarse = async (req, res) => {
             data: {
                 usuario: {
                     nickname: nickname,
-                    email: email
+                    email: email,
+                    chat: 0 
                 },
                 token: token
             },
@@ -80,6 +83,7 @@ export const inicioSesion = async (req, res) => {
         const token = jwt.sign({ _id: usuario._id, nickname: usuario.nickname }, process.env.TOKEN_SECRET, {
             expiresIn: parseInt(process.env.TOKEN_EXPIRES_IN)
         })
+        const chat = await Chat.find({ miembros: { $all: [usuario._id] }, deshabilitado: false }, { _id: 1 })
 
 
         res.status(200).json({
@@ -87,7 +91,8 @@ export const inicioSesion = async (req, res) => {
             data: {
                 usuario: {
                     nickname: usuario.nickname,
-                    email: usuario.email
+                    email: usuario.email,
+                    chat: chat
                 },
                 token: token,
             }
@@ -109,5 +114,22 @@ export const validarNickName = async (req, res) => {
         res.status(200).json({ message: "El nickname esta disponible" })
     } catch (error) {
         capturarError(error, res)
+    }
+}
+
+export const verifyToken = async (req, res) => {
+    try {
+        const { _id, nickname } = req.user
+
+        res.status(200).json({
+            message: "Token valido",
+            data: {
+                nickname: nickname,
+                _id: _id
+            }
+        })
+    }
+    catch (error) {
+        errorLog(error, res)
     }
 }

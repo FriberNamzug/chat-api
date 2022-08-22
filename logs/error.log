@@ -1,24 +1,4 @@
-MongoServerError: Plan executor error during findAndModify :: caused by :: Cannot create field 'texto' in element {mensaje: "Hola por cuarta vez "}
-    at Connection.onMessage (C:\Users\rober\Develop\Javascript\chat\chat-api\node_modules\mongodb\src\cmap\connection.ts:438:20)
-    at MessageStream.<anonymous> (C:\Users\rober\Develop\Javascript\chat\chat-api\node_modules\mongodb\src\cmap\connection.ts:256:56)
-    at MessageStream.emit (node:events:513:28)
-    at MessageStream.emit (node:domain:489:12)
-    at processIncomingData (C:\Users\rober\Develop\Javascript\chat\chat-api\node_modules\mongodb\src\cmap\message_stream.ts:193:14)
-    at MessageStream._write (C:\Users\rober\Develop\Javascript\chat\chat-api\node_modules\mongodb\src\cmap\message_stream.ts:70:5)
-    at writeOrBuffer (node:internal/streams/writable:391:12)
-    at _write (node:internal/streams/writable:332:10)
-    at MessageStream.Writable.write (node:internal/streams/writable:336:10)
-    at TLSSocket.ondata (node:internal/streams/readable:754:22) {
-  ok: 0,
-  code: 28,
-  codeName: 'PathNotViable',
-  '$clusterTime': {
-    clusterTime: new Timestamp({ t: 1661134213, i: 24 }),
-    signature: {
-      hash: new Binary(Buffer.from("4eef09a0f3b82ad96e5f5a70084f8474acdcf6fa", "hex"), 0),
-      keyId: new Long("7098413563881979911")
-    }
-  },
-  operationTime: new Timestamp({ t: 1661134213, i: 24 }),
-  [Symbol(errorLabels)]: Set(0) {}
-}
+MongooseError: Operation `usuarios.findOne()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\rober\Develop\Javascript\chat\chat-api\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:151:23)
+    at listOnTimeout (node:internal/timers:559:17)
+    at processTimers (node:internal/timers:502:7)
